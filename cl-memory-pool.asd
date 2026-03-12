@@ -25,4 +25,6 @@
                 :components ((:file "package")
                              (:file "tests"))))
   :perform (test-op (o c)
-             (uiop:symbol-call :cl-memory-pool.test :run-tests)))
+             (let ((result (uiop:symbol-call :cl-memory-pool.test :run-tests)))
+               (unless result
+                 (error "Tests failed")))))
