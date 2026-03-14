@@ -1,25 +1,15 @@
-# SBCL FASL files
 *.fasl
-*.fas
-*.lib
-*.x86f
-*.sparcf
-*.sparc64f
-*.hppa64f
-*.ppcf
-*.ppc64f
-
-# ASDF
-*.asd~
-
-# Editor backups
+*.ufasl
+*.o
+*.so
+*.dylib
+*.dll
 *~
-\#*\#
-.\#*
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Local development
+*.swp
+*.swo
+#*#
+.#*
 .cache/
+dist/
+build/
+.DS_Store

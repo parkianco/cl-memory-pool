@@ -1,33 +1,21 @@
-;; Copyright (c) 2024-2026 Parkian Company LLC. All rights reserved.
-;; SPDX-License-Identifier: BSD-3-Clause
-
-;;;; cl-memory-pool.asd - Thread-safe object pooling for SBCL
-
-(asdf:defsystem #:cl-memory-pool
-  :description "Thread-safe object pooling and memory management using SBCL native threading"
-  :author "Parkian Company LLC"
-  :license "BSD-3-Clause"
+(defsystem "CL_MEMORY_POOL"
+  :name "CL_MEMORY_POOL"
   :version "0.1.0"
+  :author "Park Ian Co"
+  :license "MIT"
+  :description "Memory Pool"
   :depends-on ()
-  :serial t
-  :components ((:file "package")
-               (:module "src"
-                :serial t
-                :components ((:file "allocation")
-                             (:file "pool")
-                             (:file "cache")
-                             (:file "registry"))))
-  :in-order-to ((asdf:test-op (test-op #:cl-memory-pool/test))))
-
-(asdf:defsystem #:cl-memory-pool/test
-  :description "Tests for cl-memory-pool"
-  :depends-on (#:cl-memory-pool)
-  :serial t
-  :components ((:module "test"
-                :serial t
+  :components ((:module "src"
                 :components ((:file "package")
-                             (:file "tests"))))
-  :perform (asdf:test-op (o c)
-             (let ((result (uiop:symbol-call :cl-memory-pool.test :run-tests)))
-               (unless result
-                 (error "Tests failed")))))
+                             (:file "impl" :depends-on ("package"))))
+               (:module "test"
+                :components ((:file "test"))))
+  :in-order-to ((test-op (test-op "CL_MEMORY_POOL/test")))
+  :defsystem-depends-on ("prove")
+  :perform (test-op (op c) (symbol-call :prove 'run c)))
+
+(defsystem "CL_MEMORY_POOL/test"
+  :name "CL_MEMORY_POOL/test"
+  :depends-on ("CL_MEMORY_POOL" "prove")
+  :components ((:module "test"
+                :components ((:file "test")))))
