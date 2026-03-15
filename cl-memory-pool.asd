@@ -9,7 +9,11 @@
                 :components ((:file "package")
                              (:file "conditions" :depends-on ("package"))
                              (:file "types" :depends-on ("package"))
-                             (:file "cl-memory-pool" :depends-on ("package" "conditions" "types"))))))
+                             (:file "allocation" :depends-on ("package"))
+                             (:file "pool" :depends-on ("package" "conditions"))
+                             (:file "cache" :depends-on ("package" "pool"))
+                             (:file "registry" :depends-on ("package" "pool"))
+                             (:file "cl-memory-pool" :depends-on ("package" "conditions" "types" "allocation" "pool" "cache" "registry")))))
   :in-order-to ((asdf:test-op (asdf:test-op #:cl-memory-pool/test))))
 
 (asdf:defsystem #:cl-memory-pool/test
