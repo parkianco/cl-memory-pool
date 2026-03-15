@@ -2,7 +2,7 @@
   :name "cl-memory-pool"
   :version "0.1.0"
   :author "Parkian Company LLC"
-  :license "BSD-3-Clause"
+  :license "Apache-2.0"
   :description "Simple reusable object pool for Common Lisp resources"
   :serial t
   :components ((:module "src"
