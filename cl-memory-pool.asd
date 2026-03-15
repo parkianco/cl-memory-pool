@@ -6,9 +6,10 @@
   :description "Simple reusable object pool for Common Lisp resources"
   :serial t
   :components ((:module "src"
-                :serial t
                 :components ((:file "package")
-                             (:file "impl"))))
+                             (:file "conditions" :depends-on ("package"))
+                             (:file "types" :depends-on ("package"))
+                             (:file "cl-memory-pool" :depends-on ("package" "conditions" "types"))))))
   :in-order-to ((asdf:test-op (asdf:test-op #:cl-memory-pool/test))))
 
 (asdf:defsystem #:cl-memory-pool/test

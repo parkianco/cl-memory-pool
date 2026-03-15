@@ -6,7 +6,9 @@
 (defpackage #:cl-memory-pool
   (:use #:cl)
   (:export
-   #:cl-memory-pool-error
+   #:with-memory-pool-timing
+   #:memory-pool-batch-process
+   #:memory-pool-health-check#:cl-memory-pool-error
    #:cl-memory-pool-validation-error#:available-resource
    #:acquire-connection
    #:pooled-resource

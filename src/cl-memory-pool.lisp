@@ -53,3 +53,43 @@ FACTORY is called to build new pooled values."
       (error "Resource ~S does not belong to pool" resource-value))
     (setf (pooled-resource-in-use-p resource) nil)
     resource-value))
+
+
+;;; Substantive API Implementations
+(define-condition cl-memory-pool-error (cl-memory-pool-error) ())
+(define-condition cl-memory-pool-validation-error (cl-memory-pool-error) ())
+
+
+;;; ============================================================================
+;;; Standard Toolkit for cl-memory-pool
+;;; ============================================================================
+
+(defmacro with-memory-pool-timing (&body body)
+  "Executes BODY and logs the execution time specific to cl-memory-pool."
+  (let ((start (gensym))
+        (end (gensym)))
+    `(let ((,start (get-internal-real-time)))
+       (multiple-value-prog1
+           (progn ,@body)
+         (let ((,end (get-internal-real-time)))
+           (format t "~&[cl-memory-pool] Execution time: ~A ms~%"
+                   (/ (* (- ,end ,start) 1000.0) internal-time-units-per-second)))))))
+
+(defun memory-pool-batch-process (items processor-fn)
+  "Applies PROCESSOR-FN to each item in ITEMS, handling errors resiliently.
+Returns (values processed-results error-alist)."
+  (let ((results nil)
+        (errors nil))
+    (dolist (item items)
+      (handler-case
+          (push (funcall processor-fn item) results)
+        (error (e)
+          (push (cons item e) errors))))
+    (values (nreverse results) (nreverse errors))))
+
+(defun memory-pool-health-check ()
+  "Performs a basic health check for the cl-memory-pool module."
+  (let ((ctx (initialize-memory-pool)))
+    (if (validate-memory-pool ctx)
+        :healthy
+        :degraded)))

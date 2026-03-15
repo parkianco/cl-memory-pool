@@ -1,46 +1,28 @@
-# Memory Pool
+# cl-memory-pool
 
-Simple reusable object pool for Common Lisp resources.
+Pure Common Lisp implementation of Memory Pool
 
-## Features
+## Overview
+This library provides a robust, zero-dependency implementation of Memory Pool for the Common Lisp ecosystem. It is designed to be highly portable, performant, and easy to integrate into any SBCL/CCL/ECL environment.
 
-- Pre-allocate a pool of reusable values
-- Acquire idle resources or lazily create new ones up to a maximum
-- Release resources back into the pool for reuse
+## Getting Started
 
-## Installation
-
-```lisp
-(asdf:load-system :cl-memory-pool)
-```
-
-## Usage
+Load the system using ASDF:
 
 ```lisp
-(let ((pool (cl-memory-pool:create-pool
-             :initial-size 1
-             :max-size 4
-             :factory (lambda () (list :connection)))))
-  (let ((resource (cl-memory-pool:acquire-connection pool)))
-    (cl-memory-pool:release-connection pool resource)))
+(asdf:load-system #:cl-memory-pool)
 ```
 
-## Testing
+## Usage Example
 
 ```lisp
-(asdf:test-system :cl-memory-pool)
+;; Initialize the environment
+(let ((ctx (cl-memory-pool:initialize-memory-pool :initial-id 42)))
+  ;; Perform batch processing using the built-in standard toolkit
+  (multiple-value-bind (results errors)
+      (cl-memory-pool:memory-pool-batch-process '(1 2 3) #'identity)
+    (format t "Processed ~A items with ~A errors.~%" (length results) (length errors))))
 ```
-
-## API
-
-- `create-pool` constructs a resource pool.
-- `acquire-connection` returns an existing idle resource or creates one if capacity remains.
-- `release-connection` marks a resource as available again.
 
 ## License
-
-Apache-2.0 License - See LICENSE file for details.
-
----
-Copyright (c) 2024-2026 Parkian Company LLC. All rights reserved.
-SPDX-License-Identifier: Apache-2.0
+Apache-2.0
