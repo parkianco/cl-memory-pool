@@ -6,6 +6,9 @@
 (defpackage #:cl-memory-pool
   (:use #:cl)
   (:export
+   #:memory-pool-context
+   #:initialize-memory-pool
+   #:memory-pool-execute
    #:memoize-function
    #:deep-copy-list
    #:group-by-count
